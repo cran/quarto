@@ -1,0 +1,17 @@
+b98d94367997235707c3334bab4c43a5 *DESCRIPTION
+43d64adaf8c9a67b7b9ebdc970af03fc *NAMESPACE
+8917832ec892bbce87aa86841116650d *R/metadata.R
+7124c8c451f2540795ea8ac867d0d44e *R/quarto.R
+e407c4ffe6281fd0ae64499d9e83b1f9 *R/render.R
+67ffbb84508fe0cb230ed25849a13bda *R/utils.R
+c6c6b1ed16952e1d73f119050c69ebe5 *README.md
+a48453c3404fb659f5f19338683cc878 *man/quarto_metadata.Rd
+e4fa0abfe2a6c8048e41b74d77e785a7 *man/quarto_path.Rd
+356f3d0ccfb27f4bac97c787ffe08f52 *man/quarto_render.Rd
+70f045500015951df25ed2d3116bde04 *tests/testthat.R
+5334f98798dd3a2eb686fb8c76cc9f7e *tests/testthat/project/_quarto/metadata.yml
+98583f1c7ac1bd41c15687cf3ff1498a *tests/testthat/project/project.md
+7522b901f874824721b242fe99d38a00 *tests/testthat/test-metadata.R
+847e7150a02da63e739685a675dbc0dc *tests/testthat/test-render.R
+d40431031c3234e50a714f891d8a66a3 *tests/testthat/test.Rmd
+013b36ba4a4337150417919b1bb36df5 *tests/testthat/test.html
