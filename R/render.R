@@ -4,7 +4,8 @@
 #' input requires computations (e.g. for Rmd or Jupyter files) then those
 #' computations are performed before rendering.
 #'
-#' @param input The input file or project directory to be rendered.
+#' @param input The input file or project directory to be rendered (defualts
+#'   to rendering the project in the current working directory).
 #' @param output_format Target output format (defaults to "html"). The option
 #'   `"all"` will render all formats defined within the file or project.
 #' @param output_file The name of the output file. If using `NULL` then the
@@ -43,7 +44,7 @@
 #' quarto_render("notebook.md")
 #' }
 #' @export
-quarto_render <- function(input,
+quarto_render <- function(input = NULL,
                           output_format = NULL,
                           output_file = NULL,
                           execute = TRUE,
@@ -57,13 +58,18 @@ quarto_render <- function(input,
                           quiet = FALSE,
                           pandoc_args = NULL) {
 
+  # provide default for input
+  if (is.null(input)) {
+    input <- getwd()
+  }
+
   # get quarto binary
   quarto_bin <- find_quarto()
 
   # build args
   args <- c("render", input)
   if (!missing(output_format)) {
-    args <- c(args, "--to", output_format)
+    args <- c(args, "--to", paste(output_format, collapse = ","))
   }
   if (!missing(output_file)) {
     args <- c(args, "--output", output_file)
@@ -86,7 +92,7 @@ quarto_render <- function(input,
     args <- c(args, "--cache-refresh")
   }
   if (!missing(kernel_keepalive)) {
-    args <- c("--kernel-keepalive", as.character(kernel_keepalive))
+    args <- c(args, "--kernel-keepalive", as.character(kernel_keepalive))
   }
   if (isTRUE(kernel_restart)) {
     args <- c(args, "--kernel-restart")
@@ -99,7 +105,7 @@ quarto_render <- function(input,
   }
 
   # run quarto
-  system2(quarto_bin, args)
+  processx::run(quarto_bin, args, echo = TRUE)
 
   # no return value
   invisible(NULL)
