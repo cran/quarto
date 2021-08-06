@@ -7,7 +7,9 @@
 \usage{
 quarto_serve(
   dir = NULL,
+  render = "none",
   port = "auto",
+  host = "127.0.0.1",
   browse = TRUE,
   watch = TRUE,
   navigate = TRUE
@@ -19,9 +21,17 @@ quarto_serve_stop()
 \item{dir}{The project directory to serve (defaults to current working
 directory)}
 
+\item{render}{By default, the most recent execution results of computational
+documents are used to render the site (this is to optimize start up time).
+If you want to perform a full render prior to serving pass "all" or a
+vector of specific formats to render. Pass "default" to render the default
+format for the site.}
+
 \item{port}{Port to listen on (defaults to 4848)}
 
-\item{browse}{Open a browser to preview the site. Defaults to using the
+\item{host}{Hostname to bind to (defaults to 127.0.0.1)}
+
+\item{browse}{Open a browser to preview the content. Defaults to using the
 RStudio Viewer when running within RStudio.Pass a function (e.g.
 \code{utils::browseURL} to override this behavior).}
 

@@ -1,6 +1,6 @@
 Package: quarto
 Title: R Interface to 'Quarto' Markdown Publishing System
-Version: 0.3
+Version: 1.0
 Authors@R: 
     person(given = "JJ",
            family = "Allaire",
@@ -19,8 +19,8 @@ BugReports: https://github.com/quarto-dev/quarto-r/issues
 Encoding: UTF-8
 RoxygenNote: 7.1.1
 NeedsCompilation: no
-Packaged: 2021-05-18 16:28:45 UTC; jjallaire
+Packaged: 2021-08-05 23:36:07 UTC; jjallaire
 Author: JJ Allaire [aut, cre] (<https://orcid.org/0000-0003-0174-9868>)
 Maintainer: JJ Allaire <jj@rstudio.com>
 Repository: CRAN
-Date/Publication: 2021-05-18 16:50:02 UTC
+Date/Publication: 2021-08-06 04:20:02 UTC
