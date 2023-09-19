@@ -4,7 +4,7 @@
 #' input requires computations (e.g. for Rmd or Jupyter files) then those
 #' computations are performed before rendering.
 #'
-#' @param input The input file or project directory to be rendered (defualts
+#' @param input The input file or project directory to be rendered (defaults
 #'   to rendering the project in the current working directory).
 #' @param output_format Target output format (defaults to "html"). The option
 #'   `"all"` will render all formats defined within the file or project.
@@ -84,7 +84,7 @@ quarto_render <- function(input = NULL,
 
   # render as job if requested and running within rstudio
   if (as_job && rstudioapi::isAvailable()) {
-    message("Rendering project as backround job (use as_job = FALSE to override)")
+    message("Rendering project as background job (use as_job = FALSE to override)")
     script <- tempfile(fileext = ".R")
     writeLines(
       c("library(quarto)", deparse(sys.call())),

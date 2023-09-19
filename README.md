@@ -23,7 +23,7 @@ The following functions enable you to render and preview Quarto documents and pr
 
 ### Publishing
 
-These functions enable you to publish static and interactive documents, websites, and books to [RStudio Connect](https://www.rstudio.com/products/connect/) and [shinyapps.io](https://www.shinyapps.io/):
+These functions enable you to publish static and interactive documents, websites, and books to [Posit Connect](https://posit.co/products/enterprise/connect/) and [shinyapps.io](https://www.shinyapps.io/):
 
 |                                                              |                                        |
 |---------------------------|------------------------------------|
