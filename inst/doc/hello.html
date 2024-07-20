@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.22">
+<meta name="generator" content="quarto-1.6.2">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -128,16 +128,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">minimal</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">embed-resources</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">css</span><span class="kw">:</span><span class="at"> custom.css</span></span></code></pre></div>
-<p>All those configurations are set in way that they can’t be override by YAML header in the vignette source file. Only new configuration can be set, e.g adding a Table Of Content:</p>
+<p>All those configurations are set in way that they can’t be overriden by the YAML header in the vignette source file and only new configurations can be set. Typical examples for such configurations are adding a <a href="https://quarto.org/docs/reference/formats/html.html#table-of-contents">table of contents</a> or enabling the rendering of mathematical notation in the <a href="https://quarto.org/docs/reference/formats/html.html#format-options">format options</a>, e.g., by MathJax. Specifically, these two options can be set in the following way:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span><span class="at"> </span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">vignette</span><span class="kw">: </span><span class="ch">&gt;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  %\VignetteIndexEntry{Vignette&#39;s Title}</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  %\VignetteEngine{quarto::html}</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  %\VignetteEncoding{UTF-8}</span></code></pre></div>
-<p>This is one limitation of the current implementation of the vignette engine. This is to insure HTML vignette produced are reasonable in size and can be published on CRAN without problem.</p>
-<p>The other limitation concerns the interactive rendering. If you render your vignette <code>.qmd</code> file using <code>quarto render</code> or any other function, the output will be based on default HTML format from Quarto and not the vignette engine one. Only building the vignette will produce the real results. More about building vignette in the <a href="https://r-pkgs.org/vignettes.html#sec-vignettes-how-built-checked">R Packages (2e)</a> book.</p>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">html-math-method</span><span class="kw">:</span><span class="at"> mathjax</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">vignette</span><span class="kw">: </span><span class="ch">&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  %\VignetteIndexEntry{Vignette&#39;s Title}</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  %\VignetteEngine{quarto::html}</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  %\VignetteEncoding{UTF-8}</span></code></pre></div>
+<p>The minimal default format is a deliberate limitation of the current implementation of the vignette engine. It ensures that the HTML vignettes produced are reasonable in size and can be published on CRAN without problems.</p>
+<p>Another limitation concerns the interactive rendering. If you render your vignette <code>.qmd</code> file using <code>quarto render</code> or any other function, the output will be based on the default HTML format from Quarto and not the vignette engine one. Only building the vignette will produce the real results. More details about building vignettes are available in the <a href="https://r-pkgs.org/vignettes.html#sec-vignettes-how-built-checked">R Packages (2e)</a> book.</p>
 <p>Intermediates resources that would be created by an authoring workflow that would <code>quarto render</code> with default <code>format: html</code> should be ignored in package sources.</p>
 <ul>
 <li>Added to <code>.Rbuildignore</code> (e.g <code>usethis::use_build_ignore(&quot;vignettes/*_files&quot;)</code>)</li>

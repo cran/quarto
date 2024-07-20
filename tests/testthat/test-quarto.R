@@ -4,7 +4,8 @@ test_that("quarto_version returns a numeric version", {
 })
 
 test_that("quarto_run gives guidance in error", {
-  skip_if_no_quarto()
+  # we need to skip previous versions because 1.5.41 introduced an issue solved completely in 1.5.56
+  skip_if_quarto_between("1.5.41", "1.5.55")
   local_reproducible_output(width = 1000)
   expect_snapshot(
     error = TRUE,

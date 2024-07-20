@@ -1,6 +1,6 @@
 Package: quarto
 Title: R Interface to 'Quarto' Markdown Publishing System
-Version: 1.4
+Version: 1.4.4
 Authors@R: c(
     person("JJ", "Allaire", , "jj@posit.co", role = "aut",
            comment = c(ORCID = "0000-0003-0174-9868")),
@@ -22,15 +22,15 @@ Suggests: curl, knitr, rsconnect (>= 0.8.26), testthat (>= 3.1.7),
 VignetteBuilder: quarto
 Config/testthat/edition: 3
 Encoding: UTF-8
-RoxygenNote: 7.3.1
-SystemRequirements: Quarto command line tools
-        (https://github.com/quarto-dev/quarto-cli).
+RoxygenNote: 7.3.2
+SystemRequirements: Quarto command line tool
+        (<https://github.com/quarto-dev/quarto-cli>).
 NeedsCompilation: no
-Packaged: 2024-03-04 17:44:56 UTC; chris
+Packaged: 2024-07-19 17:48:41 UTC; chris
 Author: JJ Allaire [aut] (<https://orcid.org/0000-0003-0174-9868>),
   Christophe Dervieux [cre, aut]
     (<https://orcid.org/0000-0003-4474-2498>),
   Posit Software, PBC [cph, fnd]
 Maintainer: Christophe Dervieux <cderv@posit.co>
 Repository: CRAN
-Date/Publication: 2024-03-06 15:40:02 UTC
+Date/Publication: 2024-07-20 06:20:01 UTC
