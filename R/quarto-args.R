@@ -3,6 +3,19 @@ cli_arg_profile <- function(profile, ...) {
   append_cli_args(arg, ...)
 }
 
+is_quiet <- function(quiet) {
+  # in CI, follow debug mode
+  if (in_ci_with_debug()) {
+    return(FALSE)
+  }
+  # these option takes precedence
+  quiet_options <- xfun::env_option("quarto.quiet", default = NA)
+  if (!is.na(quiet_options)) {
+    return(isTRUE(as.logical(quiet_options)))
+  }
+  isTRUE(quiet)
+}
+
 cli_arg_quiet <- function(...) {
   append_cli_args("--quiet", ...)
 }

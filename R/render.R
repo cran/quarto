@@ -37,7 +37,13 @@
 #'   override metadata. This will be merged with `metadata` if both are
 #'   specified, with low precedence on `metadata` options.
 #' @param debug Leave intermediate files in place after render.
-#' @param quiet Suppress warning and other messages.
+#' @param quiet Suppress warning and other messages, from R and also Quarto CLI
+#'   (i.e `--quiet` is passed as command line).
+#'
+#'   `quarto.quiet` \R option or `R_QUARTO_QUIET` environment variable can be used to globally override a function call
+#'   (This can be useful to debug tool that calls `quarto_*` functions directly).
+#'
+#'   On Github Actions, it will always be `quiet = FALSE`.
 #' @param profile [Quarto project
 #'   profile(s)](https://quarto.org/docs/projects/profiles.html) to use. Either
 #'   a character vector of profile names or `NULL` to use the default profile.
@@ -51,7 +57,8 @@
 #'   background jobs. Use the `quarto.render_as_job` \R option to control
 #'   the default globally.
 #'
-#' @importFrom rmarkdown relative_to
+#' @return Invisibly returns `NULL`. The function is called for its side effect
+#'   of rendering the specified document or project.
 #'
 #' @examples
 #' \dontrun{
@@ -69,26 +76,28 @@
 #' quarto_render("notebook.Rmd", metadata = list(lang = "fr", execute = list(echo = FALSE)))
 #' }
 #' @export
-quarto_render <- function(input = NULL,
-                          output_format = NULL,
-                          output_file = NULL,
-                          execute = TRUE,
-                          execute_params = NULL,
-                          execute_dir = NULL,
-                          execute_daemon = NULL,
-                          execute_daemon_restart = FALSE,
-                          execute_debug = FALSE,
-                          use_freezer = FALSE,
-                          cache = NULL,
-                          cache_refresh = FALSE,
-                          metadata = NULL,
-                          metadata_file = NULL,
-                          debug = FALSE,
-                          quiet = FALSE,
-                          profile = NULL,
-                          quarto_args = NULL,
-                          pandoc_args = NULL,
-                          as_job = getOption("quarto.render_as_job", "auto")) {
+quarto_render <- function(
+  input = NULL,
+  output_format = NULL,
+  output_file = NULL,
+  execute = TRUE,
+  execute_params = NULL,
+  execute_dir = NULL,
+  execute_daemon = NULL,
+  execute_daemon_restart = FALSE,
+  execute_debug = FALSE,
+  use_freezer = FALSE,
+  cache = NULL,
+  cache_refresh = FALSE,
+  metadata = NULL,
+  metadata_file = NULL,
+  debug = FALSE,
+  quiet = FALSE,
+  profile = NULL,
+  quarto_args = NULL,
+  pandoc_args = NULL,
+  as_job = getOption("quarto.render_as_job", "auto")
+) {
   # get quarto binary
   quarto_bin <- find_quarto()
 
@@ -104,11 +113,34 @@ quarto_render <- function(input = NULL,
   }
 
   # render as job if requested and running within rstudio
-  if (as_job && rstudioapi::isAvailable()) {
-    message("Rendering project as background job (use as_job = FALSE to override)")
+  if (
+    as_job &&
+      rstudioapi::isAvailable() &&
+      rstudioapi::hasFun("runScriptJob") &&
+      in_rstudio()
+  ) {
+    message(
+      "Rendering project as background job (use as_job = FALSE to override)"
+    )
     script <- tempfile(fileext = ".R")
+    render_args <- as.list(sys.call()[-1L])
+    render_args <- mapply(
+      function(arg, arg_name) {
+        paste0(
+          arg_name,
+          "="[nchar(arg_name) > 0L],
+          deparse1(eval(arg, envir = parent.frame(n = 3L)))
+        )
+      },
+      render_args,
+      names(render_args)
+    )
     writeLines(
-      c("library(quarto)", deparse(sys.call())),
+      paste0(
+        "quarto::quarto_render(",
+        paste0(render_args, collapse = ", "),
+        ")"
+      ),
       script
     )
     rstudioapi::jobRunScript(
@@ -120,14 +152,16 @@ quarto_render <- function(input = NULL,
     return(invisible(NULL))
   }
 
-
   # build args
   args <- c("render", input)
   if (!missing(output_format)) {
     args <- c(args, "--to", paste(output_format, collapse = ","))
   }
-  if (!missing(output_file)) {
-    args <- c(args, "--output", output_file)
+  if (!is.null(output_file)) {
+    # handle problem with cli flag
+    # https://github.com/quarto-dev/quarto-cli/issues/8399
+    # args <- c(args, "--output", output_file)
+    metadata[['output-file']] <- output_file
   }
   if (!missing(execute)) {
     args <- c(args, ifelse(isTRUE(execute), "--execute", "--no-execute"))
@@ -159,10 +193,11 @@ quarto_render <- function(input = NULL,
     args <- c(args, "--cache-refresh")
   }
   # metadata to pass to quarto render
-  if (!missing(metadata)) {
+  if (!is.null(metadata)) {
     # We merge meta if there is metadata_file passed
     if (!missing(metadata_file)) {
-      metadata <- merge_list(yaml::read_yaml(metadata_file, eval.expr = FALSE), metadata)
+      file_content <- yaml::read_yaml(metadata_file, eval.expr = FALSE)
+      metadata <- merge_list(file_content, metadata)
     }
     meta_file <- tempfile(pattern = "quarto-meta", fileext = ".yml")
     on.exit(unlink(meta_file), add = TRUE)
@@ -174,7 +209,7 @@ quarto_render <- function(input = NULL,
   if (isTRUE(debug)) {
     args <- c(args, "--debug")
   }
-  if (isTRUE(quiet)) {
+  if (is_quiet(quiet)) {
     args <- cli_arg_quiet(args)
   }
   if (!is.null(profile)) {

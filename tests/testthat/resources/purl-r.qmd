@@ -1,0 +1,37 @@
+---
+title: "Purl Test Document"
+format: html
+---
+
+## Section
+
+```{r}
+#| label: my-label
+#| echo: false
+#| output: asis
+cat("Hello, world")
+```
+
+## Another section
+
+```{r}
+#| echo: true
+cat("more")
+```
+
+## A section that should be commented out
+
+```{r}
+#| eval: false
+# This code should not run.
+1 + a
+```
+
+## A section explicitly commented out with `purl = FALSE`
+
+```{r}
+#| purl: false
+# This code should not be included in the purl output.
+# but it works
+1 + 1 
+```

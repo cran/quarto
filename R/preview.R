@@ -21,6 +21,12 @@
 #' @param watch Watch for changes and automatically reload browser.
 #' @param navigate Automatically navigate the preview browser to the most
 #'   recently rendered document.
+#' @param quiet Suppress warning and other messages, from R and also Quarto CLI
+#'   (i.e `--quiet` is passed as command line)
+#'
+#' @return The URL of the preview server (invisibly). This can be used to 
+#'   programmatically access the server location, for example to take screenshots
+#'   with webshot2 or pass to other automation tools.
 #'
 #' @importFrom processx process
 #' @importFrom rstudioapi isAvailable
@@ -40,18 +46,31 @@
 #' # (rather than RStudio Viewer)
 #' quarto_preview("myproj", open = utils::browseURL)
 #'
+#' # Capture the preview URL for programmatic use
+#' preview_url <- quarto_preview("document.qmd", browse = FALSE)
+#' cat("Preview available at:", preview_url, "\n")
+#'
+#' # Take a screenshot of the preview using webshot2
+#' if (require(webshot2)) {
+#'   preview_url <- quarto_preview("document.qmd", browse = FALSE)
+#'   webshot2::webshot(preview_url, "preview.png")
+#' }
+#'
 #' # Stop any running quarto preview
 #' quarto_preview_stop()
 #' }
 #'
 #' @export
-quarto_preview <- function(file = NULL,
-                           render = "auto",
-                           port = "auto",
-                           host = "127.0.0.1",
-                           browse = TRUE,
-                           watch = TRUE,
-                           navigate = TRUE) {
+quarto_preview <- function(
+  file = NULL,
+  render = "auto",
+  port = "auto",
+  host = "127.0.0.1",
+  browse = TRUE,
+  watch = TRUE,
+  navigate = TRUE,
+  quiet = FALSE
+) {
   # default for file
   if (is.null(file)) {
     file <- getwd()
@@ -66,7 +85,7 @@ quarto_preview <- function(file = NULL,
     args <- c("--no-navigate")
   }
 
-  # serve
+  # serve (return serve_url)
   run_serve_daemon(
     "preview",
     file,
@@ -75,7 +94,8 @@ quarto_preview <- function(file = NULL,
     render,
     port,
     host,
-    browse
+    browse,
+    quiet = quiet
   )
 }
 

@@ -8,22 +8,36 @@ quarto_create_project(
   name,
   type = "default",
   dir = ".",
+  title = name,
   no_prompt = FALSE,
   quiet = FALSE,
   quarto_args = NULL
 )
 }
 \arguments{
-\item{name}{The name of the project and the directory that will be created.}
+\item{name}{The name of the project and the directory that will be created. Special case
+is to use \code{name = "."} to create the project in the current directory. In that case provide \code{title}
+to set the project title.}
 
-\item{type}{The type of project to create. As of 1.4, it can be one of
+\item{type}{The type of project to create. As of Quarto 1.4, it can be one of
 \code{default}, \code{website}, \code{blog}, \code{book}, \code{manuscript}, \code{confluence}.}
 
-\item{dir}{The directory where to create the new Quarto project.}
+\item{dir}{The directory in which to create the new Quarto project, i.e. the
+parent directory.}
 
-\item{no_prompt}{Do not prompt to confirm approval to download external extension.}
+\item{title}{The title of the project. By default, it will be the name of the project, same as directory name created.
+or "My project" if \code{name = "."}. If you want to set a different title, provide it here.}
 
-\item{quiet}{Suppress warning and other messages.}
+\item{no_prompt}{Do not prompt to approve the creation of the new project
+folder.}
+
+\item{quiet}{Suppress warning and other messages, from R and also Quarto CLI
+(i.e \code{--quiet} is passed as command line).
+
+\code{quarto.quiet} \R option or \code{R_QUARTO_QUIET} environment variable can be used to globally override a function call
+(This can be useful to debug tool that calls \verb{quarto_*} functions directly).
+
+On Github Actions, it will always be \code{quiet = FALSE}.}
 
 \item{quarto_args}{Character vector of other \code{quarto} CLI arguments to append
 to the Quarto command executed by this function. This is mainly intended for
@@ -31,15 +45,32 @@ advanced usage and useful for CLI arguments which are not yet mirrored in a
 dedicated parameter of this \R function. See \verb{quarto render --help} for options.}
 }
 \description{
-This function calls \verb{quarto create project <type> <name>}. It will create a
-new directory with the project name and add some skeletons files for the
-project type chosen.
+This function calls \verb{quarto create project <type> <name>}. It creates a new
+directory with the project name, inside the requested parent directory, and
+adds some starter files that are appropriate to the project type.
 }
 \section{Quarto version required}{
-This function require Quarto 1.4 or higher. Use \code{\link[=quarto_version]{quarto_version()}}to check
-the version of Quarto detected.
+This function requires Quarto 1.4 or higher. Use \code{\link[=quarto_version]{quarto_version()}} to see
+your current Quarto version.
 }
 
+\examples{
+\dontrun{
+# Create a new project directory in another directory
+quarto_create_project("my-first-quarto-project", dir = "~/tmp")
+
+# Create a new project directory in the current directory
+quarto_create_project("my-first-quarto-project")
+
+# Create a new project with a different title
+quarto_create_project("my-first-quarto-project", title = "My Quarto Project")
+
+# Create a new project inside the current directory directly
+quarto_create_project(".", title = "My Quarto Project")
+}
+
+
+}
 \seealso{
 Quarto documentation on \href{https://quarto.org/docs/projects/quarto-projects.html}{Quarto projects}
 }
