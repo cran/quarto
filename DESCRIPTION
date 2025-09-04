@@ -1,6 +1,6 @@
 Package: quarto
 Title: R Interface to 'Quarto' Markdown Publishing System
-Version: 1.5.0
+Version: 1.5.1
 Authors@R: c(
     person("JJ", "Allaire", , "jj@posit.co", role = "aut",
            comment = c(ORCID = "0000-0003-0174-9868")),
@@ -30,7 +30,7 @@ RoxygenNote: 7.3.2
 SystemRequirements: Quarto command line tool
         (<https://github.com/quarto-dev/quarto-cli>).
 NeedsCompilation: no
-Packaged: 2025-07-28 11:16:00 UTC; chris
+Packaged: 2025-09-04 13:45:05 UTC; chris
 Author: JJ Allaire [aut] (ORCID: <https://orcid.org/0000-0003-0174-9868>),
   Christophe Dervieux [cre, aut] (ORCID:
     <https://orcid.org/0000-0003-4474-2498>),
@@ -38,4 +38,4 @@ Author: JJ Allaire [aut] (ORCID: <https://orcid.org/0000-0003-0174-9868>),
   Gordon Woodhull [ctb]
 Maintainer: Christophe Dervieux <cderv@posit.co>
 Repository: CRAN
-Date/Publication: 2025-07-28 12:00:01 UTC
+Date/Publication: 2025-09-04 15:30:02 UTC
